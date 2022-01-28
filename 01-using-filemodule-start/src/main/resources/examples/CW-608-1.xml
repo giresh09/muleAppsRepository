@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CWAccountPayables>
+	<DETAILS>
+		<CostType>LHS</CostType>
+		<CostTypeDesc>np</CostTypeDesc>
+		<CostAmount>-1770</CostAmount>
+	</DETAILS>
+	<DETAILS>
+		<CostType>RHS</CostType>
+		<CostTypeDesc>paid</CostTypeDesc>
+		<CostAmount>-1770</CostAmount>
+	</DETAILS>
+	<DETAILS>
+			<CostType>BHS</CostType>
+			<CostTypeDesc>LH</CostTypeDesc>
+			<CostAmount>-1770</CostAmount>
+	</DETAILS>
+</CWAccountPayables>

@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="products" format="csv">
+      <types:shape format="weave"><![CDATA[%dw 2.0
+
+type products = Array<{|  productid: String,   productname: String,   productprice: String|}>
+
+]]></types:shape>
+      <types:properties>
+        <types:property name="headerLineNumber" value="0"/>
+        <types:property name="header" value="true"/>
+        <types:property name="isQuotedString" value="false"/>
+      </types:properties>
+    </types:type>
+    <types:type name="inputdata" format="csv">
+      <types:shape format="weave" example="examples/sales.csv"><![CDATA[%dw 2.0
+
+type inputdata = Array<{|  Transaction_date: String,   Product: String,   Price: String,   Payment_Type: String,   Name: String,   City: String,   State: String,   Country: String,   Account_Created: String,   Last_Login: String,   Latitude: String,   Longitude: String|}>
+
+]]></types:shape>
+      <types:properties>
+        <types:property name="headerLineNumber" value="0"/>
+        <types:property name="header" value="true"/>
+        <types:property name="isQuotedString" value="false"/>
+        <types:property name="separator" value=","/>
+      </types:properties>
+    </types:type>
+    <types:type name="salesexp" format="xml">
+      <types:example format="xml" element="CWAccountPayables" location="examples/CW-608-1.xml"/>
+    </types:type>
+    <types:type name="demoinput" format="csv">
+      <types:shape format="weave" example="examples/demotest.csv"><![CDATA[%dw 2.0
+
+type demoinput = Array<{|  Transaction_date: String,   Product: String,   Price: Number,   Payment_Type: String,   Name: String,   City: String,   State: String,   Country: String,   Account_Created: String,   Last_Login: String,   Latitude: String,   Longitude: String|}>
+
+]]></types:shape>
+      <types:properties>
+        <types:property name="headerLineNumber" value="0"/>
+        <types:property name="header" value="true"/>
+        <types:property name="isQuotedString" value="false"/>
+      </types:properties>
+    </types:type>
+    <types:type name="demooutput" format="xml">
+      <types:example format="xml" element="PERSON" location="examples/CW-608-3.xml"/>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#5676de3e-1461-4df0-b2e1-6cf9899c05d2">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="products"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#7a16ca7a-4666-4524-a677-f6af70a16f9d">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="demoinput"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="demooutput"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#87b35e0b-65b2-4ead-a908-c4bf62f67ae0">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="demoinput"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="demooutput"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

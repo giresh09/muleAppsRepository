@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="d57eb1ba-06e4-482e-89f5-1d7657c37e6b" >
+		<file:connection workingDir="C:\Users\gires\Documents\New folder" />
+	</file:config>
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="13e61835-ca0d-4f46-85d2-d87c157f9d72" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="01-using-filemodule-startFlow1" doc:id="4b8a2d13-a9de-47cb-aa7f-457c0758c3d2">
+		<http:listener doc:name="Listener" doc:id="c480562b-df8b-4bec-ad34-a13e4a81bd14" config-ref="HTTP_Listener_config" path="/write" />
+		<ee:transform doc:name="Transform Message" doc:id="5676de3e-1461-4df0-b2e1-6cf9899c05d2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/csv headerLineNumber = 0 , header = false
+---
+[{
+	productid: attributes.queryParams.pid as String,
+	productname: attributes.queryParams.pname as String,
+	productprice: attributes.queryParams.pprice as String
+}]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<file:write doc:name="Write" doc:id="49bea0ac-f8ee-420e-abc4-5290391898ce" path="output\products.csv" config-ref="File_Config" mode="APPEND"/>
+	</flow>
+	<flow name="01-using-filemodule-startFlow" doc:id="317b3d97-c6f7-4bab-959c-a08d72226a9d">
+		<file:listener doc:name="On New or Updated File" doc:id="3f96a054-d058-4fd8-8801-e92a7c5ca4f8" config-ref="File_Config" directory="input" autoDelete="true">
+			<scheduling-strategy>
+				<fixed-frequency />
+			</scheduling-strategy>
+		</file:listener>
+		<ee:transform doc:name="Transform Message" doc:id="87b35e0b-65b2-4ead-a908-c4bf62f67ae0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xmlfun when(param0, param1) = ???
+
+---
+{
+	PERSON: {
+		(payload map ( payload01 , indexOfPayload01 ) -> {
+			DETAILS: {
+				CostType: payload01.Product when payload01.Product != null,
+				CostTypeDesc: payload01.Payment_Type,
+				CostAmount: payload01.Price
+			}
+		})
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<file:write doc:name="Write" doc:id="6b5628ee-3ad9-493a-9914-6c471a304bd2" config-ref="File_Config" path="#['writeoutput\Products_'++ (now() as String {format: &quot;yyyyMMdd_hhmmssSSS&quot;})++ '.xml']"/>
+	</flow>
+</mule>

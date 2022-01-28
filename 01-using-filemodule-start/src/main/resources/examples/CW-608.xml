@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CWAccountPayables>
+	<Header>
+		<SourceSystem>CW</SourceSystem>
+		<LoadNumber>3</LoadNumber>
+		<LoadStatus>C</LoadStatus>
+		<JobId>SEWRAE00061640</JobId>
+		<TransactionType>U</TransactionType>
+		<CancelledLOAD></CancelledLOAD>
+		<CancelledSCAC></CancelledSCAC>
+		<SCAC>AIRD</SCAC>
+		<CarrierPro>10001250</CarrierPro>
+	</Header>
+	<DETAILS>
+		<CostType>LHS</CostType>
+		<CostTypeDesc>LINEHAUL</CostTypeDesc>
+		<CostAmount>-1770</CostAmount>
+	</DETAILS>
+	<DETAILS>
+		<CostType>RHS</CostType>
+		<CostTypeDesc>LINEHAUL</CostTypeDesc>
+		<CostAmount>-1770</CostAmount>
+	</DETAILS>
+	<DETAILS>
+			<CostType>BHS</CostType>
+			<CostTypeDesc>LINEHAUL</CostTypeDesc>
+			<CostAmount>-1770</CostAmount>
+	</DETAILS>
+</CWAccountPayables>
