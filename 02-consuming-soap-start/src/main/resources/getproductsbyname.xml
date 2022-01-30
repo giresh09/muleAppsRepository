@@ -1,3 +1,0 @@
-<dom:getProductsByNameRequest xmlns:dom="http//way2learnonline.com/domain">
-	<name>#[attributes.queryParams.productname]</name>
-</dom:getProductsByNameRequest>
